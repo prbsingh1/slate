@@ -34,7 +34,7 @@ jobs:
       # Install Widdershins
       - run:
           name: "Install Widdershins"
-          command: npm install -g widdershins
+          command: sudo npm install -g widdershins
 
       # Translate OpenAPI Spec YAML to Markdown
       - run:
