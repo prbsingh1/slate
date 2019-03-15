@@ -22,7 +22,7 @@ jobs:
 
       # Install project dependencies
       - run:
-          name: "Install local dependencies" 
+          name: "Install local dependencies"
           command: bundle install --jobs=4 --retry=3 --path vendor/bundle
 
       # Cache local dependencies if they don't exist
@@ -37,7 +37,7 @@ jobs:
           command: npm install -g widdershins
 
       # Translate OpenAPI Spec YAML to Markdown
-      - run: 
+      - run:
           name: "Translate Open API Spec YAML to Markdown"
           command: node widdershins openapi.yaml -o source/index.html.md --language_tabs HTTP --summary true
 
@@ -47,11 +47,11 @@ jobs:
           command: bundle exec middleman build --clean
 
       # Cache the build dolders for the deploy job
-      - save_cache"
+      - save_cache:
           key: v1-web-deploy-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - build
-  
+
   deploy:
     working_directory: ~/repo
     environment:
