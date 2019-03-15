@@ -1,239 +1,251 @@
 ---
-title: API Reference
-
-language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
-
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
-
-includes:
-  - errors
-
+title: New Twitch API
+language_tabs:
+  - HTTP: HTTP
+toc_footers: []
+includes: []
 search: true
+highlight_theme: darkula
+headingLevel: 2
+
 ---
 
-# Introduction
+<h1 id="new-twitch-api">New Twitch API v1.0.0</h1>
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+> Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+The New Twitch API provides tools for developing integrations with Twitch.
 
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Base URLs:
 
-# Authentication
+* <a href="https://api.twitch.tv/helix">https://api.twitch.tv/helix</a>
 
-> To authorize, use this code:
+<a href="https://www.twitch.tv/p/legal/terms-of-service/">Terms of service</a>
 
-```ruby
-require 'kittn'
+<h1 id="new-twitch-api-moderation">Moderation</h1>
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+Moderation APIs can be used to build a curated, safe experience in panels and extensions
 
-```python
-import kittn
+## getModeratorChangeEvents
 
-api = kittn.authorize('meowmeowmeow')
-```
+<a id="opIdgetModeratorChangeEvents"></a>
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
+> Code samples
 
-```javascript
-const kittn = require('kittn');
+`GET /moderation/moderators/events`
 
-let api = kittn.authorize('meowmeowmeow');
-```
+Returns all moderators in the channel.
 
-> Make sure to replace `meowmeowmeow` with your API key.
+<h3 id="getmoderatorchangeevents-parameters">Parameters</h3>
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|broadcaster_id|query|string|true|Provided broadcaster_id must match the user_id in the auth token.|
+|user_id|query|array[string]|false|When used, this parameter filters the results and only returns a status object for users who are moderators in this channel AND have a matching user_id. User IDs that don’t belong to moderators are ignored.|
+|first|query|integer(int32)|false|Maximum number of objects to return.|
+|after|query|string|false|Cursor for forward pagination. Tells the server where to start fetching the next set of results in a multi-page response. This applies only to queries without user_id. If a user_id is specified, it supersedes any cursor/offset combinations. The cursor value specified here is from the pagination response field of a prior query.|
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+> Example responses
 
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
+> 200 Response
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+  "data": [
+    {
+      "id": "string",
+      "event_type": "string",
+      "event_timestamp": "2019-03-15T20:35:41Z",
+      "version": "string",
+      "event_data": {
+        "broadcaster_id": "string",
+        "broadcaster_name": "string",
+        "user_id": "string",
+        "user_name": "string"
+      }
+    }
+  ],
+  "pagination": "string"
+}
 ```
 
-This endpoint retrieves all kittens.
+<h3 id="getmoderatorchangeevents-responses">Responses</h3>
 
-### HTTP Request
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|List of recent Moderator-Change Events|Inline|
+|default|Default|Error Response error|[UnauthorizedResponse](#schemaunauthorizedresponse)|
 
-`GET http://example.com/api/kittens`
+<h3 id="getmoderatorchangeevents-responseschema">Response Schema</h3>
 
-### Query Parameters
+Status Code **200**
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» data|[[ModeratorChangeEvent](#schemamoderatorchangeevent)]|false|none|none|
+|»» id|string|false|none|none|
+|»» event_type|string|false|none|none|
+|»» event_timestamp|string(date-time)|false|none|none|
+|»» version|string|false|none|none|
+|»» event_data|object|false|none|none|
+|»»» broadcaster_id|string|false|none|none|
+|»»» broadcaster_name|string|false|none|none|
+|»»» user_id|string|false|none|none|
+|»»» user_name|string|false|none|none|
+|»» pagination|string|false|none|none|
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+This operation does not require authentication
 </aside>
 
-## Get a Specific Kitten
+<h1 id="new-twitch-api-streams">Streams</h1>
 
-```ruby
-require 'kittn'
+Streams APIs Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+## createStreamMarker
 
-```python
-import kittn
+<a id="opIdcreateStreamMarker"></a>
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+> Code samples
 
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
+`POST /stream/markers`
 
-```javascript
-const kittn = require('kittn');
+Creates a marker in the stream of a user specified by a user ID. A marker is an arbitrary point in a stream that the broadcaster wants to mark; e.g., to easily return to later. The marker is created at the current timestamp in the live broadcast when the request is processed. Markers can be created by the stream owner or editors. The user creating the marker is identified by a Bearer token.
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
+> Body parameter
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "user_id": "string",
+  "description": "string"
 }
 ```
 
-This endpoint retrieves a specific kitten.
+<h3 id="createstreammarker-parameters">Parameters</h3>
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[NewStreamMarkerRequest](#schemanewstreammarkerrequest)|true|none|
 
-### HTTP Request
+> Example responses
 
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
+> 200 Response
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+  "created_at": "2019-03-15T20:35:41Z",
+  "description": "string",
+  "id": "string",
+  "position_seconds": 0
 }
 ```
 
-This endpoint deletes a specific kitten.
+<h3 id="createstreammarker-responses">Responses</h3>
 
-### HTTP Request
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Information regarding newly created Stream Marker|[NewStreamMarkerResponse](#schemanewstreammarkerresponse)|
 
-`DELETE http://example.com/kittens/<ID>`
+<aside class="success">
+This operation does not require authentication
+</aside>
 
-### URL Parameters
+# Schemas
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+<h2 id="tocSnewstreammarkerresponse">NewStreamMarkerResponse</h2>
+
+<a id="schemanewstreammarkerresponse"></a>
+
+```json
+{
+  "created_at": "2019-03-15T20:35:41Z",
+  "description": "string",
+  "id": "string",
+  "position_seconds": 0
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|created_at|string(date-time)|false|none|none|
+|description|string|false|none|none|
+|id|string|false|none|none|
+|position_seconds|integer|false|none|none|
+
+<h2 id="tocSnewstreammarkerrequest">NewStreamMarkerRequest</h2>
+
+<a id="schemanewstreammarkerrequest"></a>
+
+```json
+{
+  "user_id": "string",
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|user_id|string|false|none|none|
+|description|string|false|none|Optional|
+
+<h2 id="tocSmoderatorchangeevent">ModeratorChangeEvent</h2>
+
+<a id="schemamoderatorchangeevent"></a>
+
+```json
+{
+  "id": "string",
+  "event_type": "string",
+  "event_timestamp": "2019-03-15T20:35:41Z",
+  "version": "string",
+  "event_data": {
+    "broadcaster_id": "string",
+    "broadcaster_name": "string",
+    "user_id": "string",
+    "user_name": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|event_type|string|false|none|none|
+|event_timestamp|string(date-time)|false|none|none|
+|version|string|false|none|none|
+|event_data|object|false|none|none|
+|» broadcaster_id|string|false|none|none|
+|» broadcaster_name|string|false|none|none|
+|» user_id|string|false|none|none|
+|» user_name|string|false|none|none|
+
+<h2 id="tocSunauthorizedresponse">UnauthorizedResponse</h2>
+
+<a id="schemaunauthorizedresponse"></a>
+
+```json
+{
+  "error": "string",
+  "status": 0,
+  "message": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|error|string|false|none|none|
+|status|integer(int64)|false|none|none|
+|message|string|false|none|none|
 

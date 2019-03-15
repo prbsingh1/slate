@@ -1,0 +1,155 @@
+openapi: "3.0.0"
+
+info:
+  version: 1.0.0
+  title: New Twitch API
+  description: The New Twitch API provides tools for developing integrations with Twitch.
+  termsOfService: https://www.twitch.tv/p/legal/terms-of-service/
+
+servers:
+  - url: https://api.twitch.tv/helix
+  
+tags:
+  - name: Moderation
+    description: Moderation APIs can be used to build a curated, safe experience in panels and extensions
+  - name: Streams
+    description: Streams APIs Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+
+paths:
+  /moderation/moderators/events:
+    get:
+      tags: 
+        - Moderation
+      description: |
+        Returns all moderators in the channel.
+      operationId: getModeratorChangeEvents
+      parameters:
+        - name: broadcaster_id
+          in: query
+          description: "Provided broadcaster_id must match the user_id in the auth token."
+          required: true
+          style: form
+          schema:
+            type: string
+        - name: user_id
+          in: query
+          description: "When used, this parameter filters the results and only returns a status object for users who are moderators in this channel AND have a matching user_id. User IDs that don’t belong to moderators are ignored."
+          required: false
+          schema:
+            type: array
+            items: 
+              type: string
+            maxItems: 100
+            minItems: 1
+        - name: first
+          in: query
+          description: "Maximum number of objects to return."
+          required: false
+          schema:
+            type: integer
+            format: int32
+            maximum: 100
+            minimum: 1
+            default: 20
+        - name: after
+          in: query
+          description: "Cursor for forward pagination. Tells the server where to start fetching the next set of results in a multi-page response. This applies only to queries without user_id. If a user_id is specified, it supersedes any cursor/offset combinations. The cursor value specified here is from the pagination response field of a prior query."
+          required: false
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: List of recent Moderator-Change Events
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ModeratorChangeEvent'
+                  pagination:
+                    type: string
+        default:
+          description: Error Response error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+
+  /stream/markers:
+    post:
+      tags:
+        - Streams
+      description: "Creates a marker in the stream of a user specified by a user ID. A marker is an arbitrary point in a stream that the broadcaster wants to mark; e.g., to easily return to later. The marker is created at the current timestamp in the live broadcast when the request is processed. Markers can be created by the stream owner or editors. The user creating the marker is identified by a Bearer token."
+      operationId: createStreamMarker
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewStreamMarkerRequest'
+        
+      responses:
+        '200':
+          description: Information regarding newly created Stream Marker
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewStreamMarkerResponse'
+
+components:
+  schemas:
+    NewStreamMarkerResponse:
+      properties:
+        created_at:
+          type: string
+          format: date-time
+        description:
+          type: string
+        id:
+          type: string
+        position_seconds:
+          type: integer
+          
+    NewStreamMarkerRequest:
+      properties:
+        user_id:
+          type: string
+        description:
+          type: string
+          description: Optional
+  
+    ModeratorChangeEvent:
+      properties:
+        id:
+          type: string
+        event_type:
+          type: string
+        event_timestamp:
+          type: string
+          format: date-time
+        version:
+          type: string
+        event_data:
+          properties:
+            broadcaster_id:
+              type: string
+            broadcaster_name:
+              type: string
+            user_id:
+              type: string
+            user_name:
+              type: string
+              
+    UnauthorizedResponse:
+      properties:
+        error:
+          type: string
+        status: 
+          type: integer
+          format: int64
+        message:
+          type: string
+
+  
