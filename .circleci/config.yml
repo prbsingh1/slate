@@ -73,9 +73,9 @@ jobs:
           name: Deploy to S3 Bucket
           command: |
             if [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
-              aws s3 sync web_deploy s3://poc-api-docs-fdek0092jahdvsdmldlfwmisfnvi9j3fsiksn/hgnwkfsekgsx --delete
+              aws s3 sync build s3://poc-api-docs-fdek0092jahdvsdmldlfwmisfnvi9j3fsiksn/hgnwkfsekgsx --delete
             elif [ "${CIRCLE_BRANCH}" == "${STAGING_BRANCH}" ]; then
-              aws s3 sync web_deploy s3://poc-api-docs-fdek0092jahdvsdmldlfwmisfnvi9j3fsiksn/staging --delete
+              aws s3 sync build s3://poc-api-docs-fdek0092jahdvsdmldlfwmisfnvi9j3fsiksn/staging --delete
             fi
 
 workflows:
