@@ -20,6 +20,7 @@ paths:
     get:
       tags: 
         - Moderation
+      summary: Get Moderator Change Events
       description: |
         Returns all moderators in the channel.
       operationId: getModeratorChangeEvents

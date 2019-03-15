@@ -26,7 +26,7 @@ Base URLs:
 
 Moderation APIs can be used to build a curated, safe experience in panels and extensions
 
-## getModeratorChangeEvents
+## Get Moderator Change Events
 
 <a id="opIdgetModeratorChangeEvents"></a>
 
@@ -36,7 +36,7 @@ Moderation APIs can be used to build a curated, safe experience in panels and ex
 
 Returns all moderators in the channel.
 
-<h3 id="getmoderatorchangeevents-parameters">Parameters</h3>
+<h3 id="get-moderator-change-events-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -55,7 +55,7 @@ Returns all moderators in the channel.
     {
       "id": "string",
       "event_type": "string",
-      "event_timestamp": "2019-03-15T20:35:41Z",
+      "event_timestamp": "2019-03-15T21:30:34Z",
       "version": "string",
       "event_data": {
         "broadcaster_id": "string",
@@ -69,14 +69,14 @@ Returns all moderators in the channel.
 }
 ```
 
-<h3 id="getmoderatorchangeevents-responses">Responses</h3>
+<h3 id="get-moderator-change-events-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|List of recent Moderator-Change Events|Inline|
 |default|Default|Error Response error|[UnauthorizedResponse](#schemaunauthorizedresponse)|
 
-<h3 id="getmoderatorchangeevents-responseschema">Response Schema</h3>
+<h3 id="get-moderator-change-events-responseschema">Response Schema</h3>
 
 Status Code **200**
 
@@ -133,7 +133,7 @@ Creates a marker in the stream of a user specified by a user ID. A marker is an 
 
 ```json
 {
-  "created_at": "2019-03-15T20:35:41Z",
+  "created_at": "2019-03-15T21:30:34Z",
   "description": "string",
   "id": "string",
   "position_seconds": 0
@@ -158,7 +158,7 @@ This operation does not require authentication
 
 ```json
 {
-  "created_at": "2019-03-15T20:35:41Z",
+  "created_at": "2019-03-15T21:30:34Z",
   "description": "string",
   "id": "string",
   "position_seconds": 0
@@ -202,7 +202,7 @@ This operation does not require authentication
 {
   "id": "string",
   "event_type": "string",
-  "event_timestamp": "2019-03-15T20:35:41Z",
+  "event_timestamp": "2019-03-15T21:30:34Z",
   "version": "string",
   "event_data": {
     "broadcaster_id": "string",
