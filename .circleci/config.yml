@@ -34,12 +34,12 @@ jobs:
       # Install Widdershins
       - run:
           name: "Install Widdershins"
-          command: npm install widdershins
+          command: sudo npm install -g widdershins
 
       # Translate OpenAPI Spec YAML to Markdown
       - run:
           name: "Translate Open API Spec YAML to Markdown"
-          command: node /usr/local/bin/widdershins openapi.yaml -o source/index.html.md --language_tabs HTTP --summary true
+          command: node widdershins openapi.yaml -o source/index.html.md --language_tabs HTTP --summary true
 
       # Generate static content
       - run:
